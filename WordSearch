@@ -1,0 +1,39 @@
+class Solution:
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        __flag = [([0] * len(board[0])) for i in range(len(board))]
+        #__word = word
+
+        if not board:
+            return False
+        
+        def search(pos, board, rest): 
+            x, y = pos[0], pos[1]
+            #print(x, y, len(board), len(board[0]))
+            if x < 0 or y < 0 or x >= len(board) or y >= len(board[0]) or __flag[x][y] == 1:
+                return False
+            elif board[x][y] == rest[0]:
+                __flag[x][y] = 1
+                if len(rest) == 1:
+                    return True
+                res = search([x+1, y], board, rest[1:]) or search([x, y+1], board, rest[1:]) or search([x-1, y], board, rest[1:]) or search([x, y-1], board, rest[1:])
+                if not res:
+                    __flag[x][y] = 0
+                return res
+            else:
+                return False
+            
+        word_list = list(word)
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == word_list[0]:
+                    if search([i, j], board, word_list):
+                        return True
+                    __flag = [([0] * len(board[0])) for i in range(len(board))]
+                    
+        return False
+                
