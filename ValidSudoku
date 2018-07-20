@@ -1,0 +1,40 @@
+class Solution:
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        def collision(pos, board):
+            a, b = pos[0], pos[1]
+            element = board[b][a]
+            temp1, temp2, temp3 = [], [], []
+            #horizontal
+            
+            temp1 = board[b].copy()
+            temp1.remove(element)
+            if element in temp1 and element != '.':
+                return False
+                
+            #vertical
+            for j in range(len(board)):
+                temp2 += [board[j][a]]
+            temp2.remove(element)
+            if element in temp2 and element != '.':
+                return False
+                
+            #block
+            for m in range(b-b%3, b-b%3+3):
+                for n in range(a-a%3, a-a%3+3):
+                    temp3 += board[m][n]
+            temp3.remove(element)
+            if element in temp3 and element != '.':
+                return False
+                
+            return True
+        
+        for x in range(len(board)):
+            for y in range(len(board[x])):
+                if not collision([y, x], board):
+                    return False
+                
+        return True
