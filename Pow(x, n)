@@ -1,0 +1,16 @@
+class Solution:
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        times = abs(n)
+        res = 1
+        
+        while times:
+            if times & 1:
+                res *= x
+            x *= x
+            times >>= 1
+        return res if n > 0 else 1/res
