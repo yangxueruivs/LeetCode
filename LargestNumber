@@ -1,0 +1,42 @@
+from functools import reduce 
+
+class Solution:
+    def largestNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: str
+        """
+        if not nums:
+            return ""
+        
+        res = []
+        def maxNum(a, b):
+            a1, b1 = list(str(a)), list(str(b))
+            i, j = 0, 0
+            while i < len(a1) or j < len(b1):
+                #print(a, b, i, j, len(a1), len(b1))
+                if a1[i] > b1[j]:
+                    return a
+                elif a1[i] < b1[j]:
+                    return b
+                else:
+                    i += 1
+                    j += 1
+                    if i >= len(a1) and j >= len(b1):
+                        break
+                    elif i >= len(a1):
+                        i = 0
+                    elif j >= len(b1):
+                        j = 0
+
+            return a
+        
+        while nums:
+            temp = reduce(maxNum, nums)
+            res += [temp]
+            nums.remove(temp)    
+            #print(res)
+        
+        if not reduce(lambda x, y : x != 0 or y != 0, res):
+            return "0" 
+        return "".join(map(str, res))
